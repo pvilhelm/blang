@@ -1,0 +1,136 @@
+
+
+# Bläng!
+
+#Syntax:
+# ^ denotes start of line exluding whitespaces
+# r"qweqwe" denotes a regular expressen
+# "weee" denotes literal wording
+# !("whatever") - matches not the thing in paranteces until the thing in the paranteces
+# *() - however many of the thing in the paranteces
+# ?() - one or zero of the things in the paranteces
+# +() - one or more - || -
+# ^ - matches beginning of line including any number of whitespaces
+# $ - matches end of file or end of line including any number of whitespaces
+
+
+comment (comment):
+    "/*"!("*/")"*/"
+    "//"
+    
+label (l):
+    ^":"name
+
+expression (e):
+
+parameter-list (p::l):
+    e *("," e)
+    
+target-expression (e::t):
+
+function-expression (e::fnc):
+    name "(" p::l ")"
+    name "(" ")"
+    
+value-expression (e::v):
+
+assignment-expression (e::as):
+    e "=" e
+        
+statement (s):    
+    e ";"
+    ";"            #null statement
+    
+type (type):
+    
+property_type (type_prop):
+    "const"
+    "[" r"\d*" "]" #array
+    
+integer (type::integer):
+    "int"
+    "i8"
+    "i16"
+    "i32"
+    "i64"
+    "i128"
+    "u8"
+    "u16"
+    "u32"
+    "u64"
+    "u128"
+    "uint"
+    
+single (type::single):
+    "f32"
+    "float"
+    
+double (type::double):
+    "f64"
+    "double"
+    
+definition-expression (e::def):
+
+function-definition-expression (e::def::fnc):
+    *type_prop type name "(" p::l ")" *type_prop
+    
+list-variable-definition-expression (e::def::var:list):
+    e::def::var +("," *type_prop ?type name *type_prop)
+
+variable-definition-expression (e::def::var):
+    *type_prop type name *type_prop
+    
+control-statement (s::c):
+    
+jump-statement (s::c::jmp):
+    "jmp" l
+    
+if_else-statement (s::c:ife):
+    s::c::if "else" s
+        
+if-statement (s::c::if)
+    "if" e s 
+
+while_else-statement (s::c::whe):
+    s::c::wh "else" s
+        
+while-statement (s::c::wh):
+    "while" e s
+        
+for_else-statement (s::c::fe):
+    s::c::f "else" s
+        
+for-statement (s::c::f):
+    "for" "(" e::a ";" e ";" e ")" s
+    "for" "(" e ":" e ")" s       # container iteration
+    
+literal-expression (e::lit):
+    
+string-literal (e::lit::sl):
+    sl::prefix"\""r"((\\\")|[^\"])*""\""sl::postfix
+    sl::prefix"\""r"((\\\")|[^\"])*""\""
+    "\""r"((\\\")|[^\"])*""\""sl::postfix
+    "\""r"((\\\")|[^\"])*""\""
+    
+number-literal (e::lit:num):
+    r"[\d]+(\.[\d])?"num::suff
+    r"[\d]+(\.[\d])?"
+    r"0x[\dA-Fa-f]+"
+    r"[10]+b"
+    r"[01234567]+o"
+    
+logic-literal (e::lit::logic):
+    "true"
+    "false"
+    
+unit-expression (e::u):
+    e name
+    
+number-suffix (num::suff)
+    "s"
+    "d"
+    
+    
+# Else it's a name
+name (name):
+    r"\w[\w\d]*"
