@@ -38,6 +38,6 @@ class rule_parser(object):
 
 if __name__ == "__main__":
     p = rule_parser()
-    p.load(r"C:\Users\fisksoppa\Documents\blang\bläng spec.txt")
+    p.load(r"C:\repos\blang\blang\blang\bläng spec.txt")
     p.parse()
     print(p.text_no_comments)

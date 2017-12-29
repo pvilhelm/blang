@@ -1,22 +1,21 @@
 
-
 # Bläng!
 
 #Syntax:
 # ^ denotes start of line exluding whitespaces
 # r"qweqwe" denotes a regular expressen
 # "weee" denotes literal wording
-# !("whatever") - matches not the thing in paranteces until the thing in the paranteces
+# !("whatever") - matches anything but the thing in the paranteces
+# *!("whatever") - matches not the thing in paranteces until the thing in the paranteces
 # *() - however many of the thing in the paranteces
 # ?() - one or zero of the things in the paranteces
 # +() - one or more - || -
 # ^ - matches beginning of line including any number of whitespaces
 # $ - matches end of file or end of line including any number of whitespaces
 
-
 comment (comment):
-    "/*"!("*/")"*/"
-    "//"
+    "/*"*!("*/")"*/"
+    "//"*!($)
     
 label (l):
     ^":"name
